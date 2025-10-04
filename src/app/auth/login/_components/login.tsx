@@ -13,9 +13,13 @@ import { Form } from "@/components/ui/form";
 import { LOGIN_FORM_DEFAULT, loginSchema } from "@/constants/auth-constant";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { EyeIcon, EyeClosedIcon } from "lucide-react";
 
-export default function Register() {
+export default function Login() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: LOGIN_FORM_DEFAULT,
@@ -46,8 +50,16 @@ export default function Register() {
               form={form}
               name="password"
               label="Password"
-              type="password"
-              placeholder="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="*******"
+              suffixIcon={
+                showPassword ? (
+                  <EyeIcon className="text-muted-foreground" />
+                ) : (
+                  <EyeClosedIcon className="text-muted-foreground" />
+                )
+              }
+              onClickSuffixIcon={() => setShowPassword((prev) => !prev)}
             />
 
             <Button type="submit" className="w-full">

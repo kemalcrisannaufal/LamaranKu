@@ -16,9 +16,16 @@ import {
 } from "@/constants/auth-constant";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { EyeIcon, EyeClosedIcon } from "lucide-react";
 
 export default function Register() {
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    confirmPassword: false,
+  });
+
   const form = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: REGISTER_FORM_DEFAULT,
@@ -56,16 +63,42 @@ export default function Register() {
               form={form}
               name="password"
               label="Password"
-              type="password"
-              placeholder="password"
+              type={showPassword.password ? "text" : "password"}
+              placeholder="*******"
+              suffixIcon={
+                showPassword.password ? (
+                  <EyeIcon className="text-muted-foreground" />
+                ) : (
+                  <EyeClosedIcon className="text-muted-foreground" />
+                )
+              }
+              onClickSuffixIcon={() =>
+                setShowPassword((prev) => ({
+                  ...prev,
+                  password: !prev.password,
+                }))
+              }
             />
 
             <FormInput
               form={form}
               name="confirmPassword"
               label="Confirm Password"
-              type="password"
-              placeholder="Confirm Password"
+              type={showPassword.confirmPassword ? "text" : "password"}
+              placeholder="*******"
+              suffixIcon={
+                showPassword.confirmPassword ? (
+                  <EyeIcon className="text-muted-foreground" />
+                ) : (
+                  <EyeClosedIcon className="text-muted-foreground" />
+                )
+              }
+              onClickSuffixIcon={() =>
+                setShowPassword((prev) => ({
+                  ...prev,
+                  confirmPassword: !prev.confirmPassword,
+                }))
+              }
             />
 
             <Button type="submit" className="w-full">
